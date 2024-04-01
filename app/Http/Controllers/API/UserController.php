@@ -14,8 +14,7 @@ class UserController extends Controller
         $email    = $request->get('email');
         $password = $request->get('password');
 
-        if(Auth::attempt(compact('email' , 'password')))
-        {
+        if (Auth::attempt(compact('email', 'password'))) {
             $user         = auth()->user();
             $access_token = $user->createToken('authToken')->plainTextToken;
 
@@ -24,12 +23,11 @@ class UserController extends Controller
                 'message' => "User Authenticated Successfully",
                 'token'   => $access_token
             ]);
-
-        }else{
-           return response()->json([
-            'status'  => false,
-            'message' => "Invalid Username or Password"
-           ]);
+        } else {
+            return response()->json([
+                'status'  => false,
+                'message' => "Invalid Username or Password"
+            ]);
         }
     }
 
@@ -40,7 +38,8 @@ class UserController extends Controller
         $user->name     = $request->name;
         $user->phone    = $request->phone;
         $user->email    = $request->email;
-        $user->password = bcrypt( $request->password );
+        $user->password = bcrypt($request->password);
+        $user->role     = $request->role;
 
         $user->save();
 
