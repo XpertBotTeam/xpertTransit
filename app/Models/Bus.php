@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Bus extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'description', 'code', 'owner_id'];
+    protected $fillable = ['name', 'description'];
 
     public function owner()
     {

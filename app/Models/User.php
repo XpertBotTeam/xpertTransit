@@ -46,7 +46,7 @@ class User extends Authenticatable
 
     public function bus()
     {
-        return $this->hasOne(Bus::class);
+        return $this->hasMany(Bus::class);
     }
     public function location()
     {
