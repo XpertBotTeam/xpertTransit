@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\BusRequest;
 use Illuminate\Support\Str;
 use App\Models\Bus;
+use PhpParser\Node\Expr\Cast\String_;
 
 class BusController extends Controller
 {
@@ -130,6 +131,32 @@ class BusController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Bus deleted successfully',
+        ]);
+    }
+
+    public function joinBus(Request $request)
+    {
+        $students = Bus::find($request->bus_id)->students;
+        return response()->json([
+            'status' => true,
+            'message' => 'Students retrieved successfully',
+            'data' => $students
+        ]);
+    }
+    public function allStudents(String $id)
+    {
+        $bus = Bus::find($id);
+        if (is_null($bus)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Bus not found',
+            ]);
+        }
+        $students = $bus->students;
+        return response()->json([
+            'status' => true,
+            'message' => 'Students retrieved successfully',
+            'data' => $students
         ]);
     }
 }

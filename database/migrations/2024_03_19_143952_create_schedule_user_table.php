@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('schedules_users', function (Blueprint $table) {
+        Schema::create('schedule_user', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('schedule_id');
             $table->foreign('schedule_id')->references('id')->on('schedules');
