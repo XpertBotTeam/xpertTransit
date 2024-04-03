@@ -21,7 +21,8 @@ class UserController extends Controller
             return response()->json([
                 'status'  => true,
                 'message' => "User Authenticated Successfully",
-                'token'   => $access_token
+                'token'   => $access_token,
+                'role'    => $user->role
             ]);
         } else {
             return response()->json([
@@ -48,7 +49,8 @@ class UserController extends Controller
         return response()->json([
             'status'  => true,
             'message' => "User Registered Successfully",
-            'token'   => $access_token
+            'token'   => $access_token,
+            'role'    => $user->role
         ]);
     }
 }

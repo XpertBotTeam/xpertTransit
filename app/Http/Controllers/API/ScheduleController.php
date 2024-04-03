@@ -132,8 +132,6 @@ class ScheduleController extends Controller
                 'message' => 'Schedule not found',
             ]);
         }
-        // Deattach the schedule from the user
-        $user->schedules()->detach($id);
         $schedule->delete();
         return response()->json([
             'status' => true,

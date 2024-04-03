@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('bus_user', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('bus_id');
-            $table->foreign('bus_id')->references('id')->on('buses');
+            $table->foreign('bus_id')->references('id')->on('buses')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

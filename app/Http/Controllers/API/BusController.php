@@ -136,11 +136,18 @@ class BusController extends Controller
 
     public function joinBus(Request $request)
     {
-        $students = Bus::find($request->bus_id)->students;
+        $code = $request->code;
+        $bus = Bus::where('code', $code)->first();
+        if (is_null($bus)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Bus not found',
+            ]);
+        }
+        $bus->students()->attach(auth()->user()->id);
         return response()->json([
             'status' => true,
-            'message' => 'Students retrieved successfully',
-            'data' => $students
+            'message' => 'You have joined the bus successfully',
         ]);
     }
     public function allStudents(String $id)
