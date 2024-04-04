@@ -19,6 +19,7 @@ use App\Http\Controllers\API\ScheduleController;
 |
 */
 
+// {{ Sanctum Authentication}}
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
 
@@ -42,4 +43,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('schedules/{schedule}', [ScheduleController::class, 'destroy']);
     Route::get('schedules/{schedule}', [ScheduleController::class, 'show']);
     Route::get('schedules/s/next-day', [ScheduleController::class, 'getNextSchedule']);
+
+    //{{ User }}
+    Route::put('/user', [UserController::class, 'update']);
+    Route::delete('/user' ,[UserController::class, 'delete']);
+    Route::get('/user' ,[UserController::class, 'getLoggedInUser']);
+
 });

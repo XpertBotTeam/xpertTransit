@@ -53,4 +53,68 @@ class UserController extends Controller
             'role'    => $user->role
         ]);
     }
+
+    public function update(Request $request)
+    {
+        $AuthUser = Auth::user();
+
+        if ($AuthUser) {
+
+            $user = User::find($AuthUser->id);
+            // Update the user's data
+            $user->name     = $request->name             ?? $user->name;
+            $user->phone    = $request->phone            ?? $user->phone;
+            $user->email    = $request->email            ?? $user->email;
+            $user->password = bcrypt($request->password) ?? $user->password;
+            $user->role     = $request->role             ?? $user->role;
+
+            $user->save();
+
+            return response()->json([
+                'status'  => true,
+                'message' => 'User updated successfully',
+                'data'    => $user
+            ], 200);
+        } else {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Unauthorized action or invalid user ID'
+            ], 401);
+        }
+    }
+
+    public function delete()
+    {
+
+        $AuthUser = Auth::user();
+
+        if ($AuthUser) {
+            $user = User::find($AuthUser->id);
+
+            $user->delete();
+
+            return response()->json([
+                'status'  => true,
+                'message' => 'User deleted successfully'
+            ]);
+        }
+        else{
+            return response()->json([
+                'status'  => false,
+                'message' => 'Unauthorized action or invalid user ID'
+            ]);
+        }
+    }
+
+    public function getLoggedInUser()
+    {
+        $LoggedUser = Auth::user()->id;
+
+        $user = User::find($LoggedUser);
+
+        return response()->json([
+            'status'  => true,
+            'data' => $user
+        ]);
+    }
 }
