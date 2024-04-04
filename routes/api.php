@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
+use App\Http\Middleware\isOwner;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\BusController;
-use App\Http\Middleware\isOwner;
+use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\API\ScheduleController;
 
 
@@ -46,7 +47,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     //{{ User }}
     Route::put('/user', [UserController::class, 'update']);
-    Route::delete('/user' ,[UserController::class, 'delete']);
-    Route::get('/user' ,[UserController::class, 'getLoggedInUser']);
+    Route::delete('/user', [UserController::class, 'delete']);
+    Route::get('/user', [UserController::class, 'getLoggedInUser']);
 
+    //{{ Location }}
+    Route::get('/locations', [LocationController::class, 'index']);// Retrieve all locations
+    Route::post('/locations', [LocationController::class, 'store']);
+    Route::get('/locations/{id}', [LocationController::class, 'show']);// Retrieve a specific location
+    Route::put('/locations/{id}', [LocationController::class, 'update']);
+    Route::delete('/locations/{id}', [LocationController::class, 'destroy']);
 });
