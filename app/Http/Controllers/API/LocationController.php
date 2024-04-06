@@ -15,7 +15,7 @@ class LocationController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if ($user->role === 'bus owner') {
+        if ($user->role === 'owner') {
             $locations = Location::all();
             return response()->json($locations);
         } else {

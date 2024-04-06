@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
@@ -32,7 +33,7 @@ class UserController extends Controller
         }
     }
 
-    public function register(Request $request)
+    public function register(UserRequest $request)
     {
         $user = new User;
 
@@ -54,7 +55,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function update(UserRequest $request)
     {
         $AuthUser = Auth::user();
 
@@ -97,8 +98,7 @@ class UserController extends Controller
                 'status'  => true,
                 'message' => 'User deleted successfully'
             ]);
-        }
-        else{
+        } else {
             return response()->json([
                 'status'  => false,
                 'message' => 'Unauthorized action or invalid user ID'

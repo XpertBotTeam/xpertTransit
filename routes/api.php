@@ -46,14 +46,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('schedules/s/next-day', [ScheduleController::class, 'getNextSchedule']);
 
     //{{ User }}
-    Route::put('/user', [UserController::class, 'update']);
+    Route::put('/user/{user}', [UserController::class, 'update']);
     Route::delete('/user', [UserController::class, 'delete']);
     Route::get('/user', [UserController::class, 'getLoggedInUser']);
 
     //{{ Location }}
-    Route::get('/locations', [LocationController::class, 'index']);// Retrieve all locations
+    Route::get('/locations', [LocationController::class, 'index']); // Retrieve all locations
     Route::post('/locations', [LocationController::class, 'store']);
-    Route::get('/locations/{id}', [LocationController::class, 'show']);// Retrieve a specific location
+    Route::get('/locations/{id}', [LocationController::class, 'show']); // Retrieve a specific location
     Route::put('/locations/{id}', [LocationController::class, 'update']);
     Route::delete('/locations/{id}', [LocationController::class, 'destroy']);
 });
