@@ -168,9 +168,7 @@ class LocationController extends Controller
     }
     public function getIsAttendingLocations()
     {
-        $currentDate = Carbon::now();
 
-        // Retrieve the day of the week (0 for Sunday, 1 for Monday, ..., 6 for Saturday)
         $dayOfWeek = Carbon::now()->addDay()->englishDayOfWeek;
 
         // Retrieve the logged-in owner's user instance
