@@ -43,10 +43,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function ownedBus()
+    {
+        return $this->hasOne(Bus::class, 'owner_id');
+    }
 
     public function bus()
     {
-        return $this->hasMany(Bus::class);
+        return $this->belongsToMany(Bus::class);
     }
     public function location()
     {

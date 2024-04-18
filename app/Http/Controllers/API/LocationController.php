@@ -6,6 +6,7 @@ use App\Models\Location;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class LocationController extends Controller
 {
@@ -15,14 +16,34 @@ class LocationController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if ($user->role === 'owner') {
-            $locations = Location::all();
-            return response()->json($locations);
+        // check if the user is a student
+        if ($user->role === 'student') {
+            // Get the location of the student by location method in user model
+            $locations = $user->location;
         } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'Unauthorized action'
-            ], 401);
+            if ($user->ownedBus) {
+                // Retrieve the bus owned by the logged-in owner
+                $bus = $user->ownedBus;
+
+                // Retrieve all the students associated with the bus
+                $students = $bus->students()->get();
+
+                // Retrieve all locations associated with the students
+                $locations = Location::whereIn('user_id', $students->pluck('id'))->get();
+
+                // Return the locations
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Locations retrieved successfully',
+                    'data' => $locations
+                ]);
+            } else {
+                // If the owner doesn't have a bus, return an error message
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Owner does not have a bus associated.'
+                ]);
+            }
         }
     }
 
@@ -143,6 +164,46 @@ class LocationController extends Controller
                 'status' => false,
                 'message' => 'Unauthorized action'
             ], 401);
+        }
+    }
+    public function getIsAttendingLocations()
+    {
+        $currentDate = Carbon::now();
+
+        // Retrieve the day of the week (0 for Sunday, 1 for Monday, ..., 6 for Saturday)
+        $dayOfWeek = Carbon::now()->addDay()->englishDayOfWeek;
+
+        // Retrieve the logged-in owner's user instance
+        $owner = Auth::user();
+
+        // Check if the owner has a bus
+        if ($owner->ownedBus) {
+            // Retrieve the bus owned by the logged-in owner
+            $bus = $owner->ownedBus;
+
+            // Retrieve all the students associated with the bus
+            $students = $bus->students()->get();
+
+            // Filter the students based on their schedules for the current day of the week and their isAttending attribute
+            $filteredStudents = $students->filter(function ($student) use ($dayOfWeek) {
+                return $student->schedules()->where('day', $dayOfWeek)->where('is_attending', true)->exists();
+            });
+
+            // Retrieve all locations associated with the filtered students
+            $locations = Location::whereIn('user_id', $filteredStudents->pluck('id'))->get();
+
+            // Return the locations
+            return response()->json([
+                'status' => true,
+                'message' => 'Locations retrieved successfully',
+                'data' => $locations
+            ]);
+        } else {
+            // If the owner doesn't have a bus, return an error message
+            return response()->json([
+                'status' => false,
+                'message' => 'Owner does not have a bus associated.'
+            ]);
         }
     }
 }

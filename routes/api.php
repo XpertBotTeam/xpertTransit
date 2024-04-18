@@ -56,4 +56,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/locations/{id}', [LocationController::class, 'show']); // Retrieve a specific location
     Route::put('/locations/{id}', [LocationController::class, 'update']);
     Route::delete('/locations/{id}', [LocationController::class, 'destroy']);
+    Route::get('/locations/attendence/true', [LocationController::class, 'getIsAttendingLocations']);
 });
