@@ -5,7 +5,7 @@ use App\Http\Middleware\isOwner;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\BusController;
 use App\Http\Controllers\API\UserController;
-use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\API\LocationController;
 use App\Http\Controllers\API\ScheduleController;
 
 
