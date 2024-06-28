@@ -34,7 +34,7 @@ Route::group(['middleware' => ['auth:sanctum', isOwner::class]], function () {
     Route::get('buses/{bus}/students', [BusController::class, 'allStudents']);
 });
 Route::get('buses/{bus}', [BusController::class, 'show'])->middleware('auth:sanctum');
-Route::post('buses/join', [BusController::class, 'joinBus'])->middleware('auth:sanctum');
+Route::post('/buses/join', [BusController::class, 'joinBus'])->middleware('auth:sanctum');
 
 // Schedule routes
 Route::group(['middleware' => ['auth:sanctum']], function () {

@@ -20,6 +20,11 @@ class LocationController extends Controller
         if ($user->role === 'student') {
             // Get the location of the student by location method in user model
             $locations = $user->location;
+            return response()->json([
+                'status' => true,
+                'message' => 'Locations retrieved successfully',
+                'data' => $locations
+            ]);
         } else {
             if ($user->ownedBus) {
                 // Retrieve the bus owned by the logged-in owner
